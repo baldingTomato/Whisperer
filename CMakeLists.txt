@@ -7,8 +7,8 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/main.cpp)
-set(TESTS tests/main-ut.cpp)
+set(SOURCES src/linux_listener.cpp)
+set(TESTS tests/listener_ut.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -23,8 +23,8 @@ FetchContent_MakeAvailable(googletest)
 project(whisperer)
 enable_testing()
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-add_executable(${PROJECT_NAME}-ut ${TESTS})
+add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
+add_executable(${PROJECT_NAME}-ut ${TESTS} ${SOURCES})
 
 if(UNIX)
     target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_LINUX})
