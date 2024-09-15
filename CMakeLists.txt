@@ -7,7 +7,7 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/linux_listener.cpp)
+set(SOURCES src/linux_listener.cpp src/file_input_device.hpp)
 set(TESTS tests/listener_ut.cpp)
 
 include(FetchContent)
@@ -32,7 +32,7 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_WINDOWS})
 endif()
 
-target_link_libraries(${PROJECT_NAME}-ut gtest_main)
+target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)
