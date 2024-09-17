@@ -7,7 +7,7 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/linux_listener.cpp src/file_input_device.hpp)
+set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp)
 set(TESTS tests/listener_ut.cpp)
 
 include(FetchContent)

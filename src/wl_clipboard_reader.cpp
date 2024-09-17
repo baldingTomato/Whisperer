@@ -1,5 +1,3 @@
-#pragma once
-
 #include "wl_clipboard_reader.hpp"
 
 #include <array>
