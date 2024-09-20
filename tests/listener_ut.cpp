@@ -55,7 +55,7 @@ TEST_F(LinuxListenerTest, ReactToSelectionReturnsExpectedString) {
 TEST_F(LinuxListenerTest, ListenerDetectsShortcut) {
     EXPECT_CALL(*mockReader, getClipboardText())
         .Times(1)
-        .WillOnce(Return(""));
+        .WillOnce(Return("Expected Output"));
     
     EXPECT_CALL(*mockDevice, openDevice(_, _))
         .Times(1)
@@ -85,5 +85,7 @@ TEST_F(LinuxListenerTest, ListenerDetectsShortcut) {
 
     listener = std::make_unique<LinuxListener>(std::move(mockDevice), std::move(mockReader));
 
-    EXPECT_TRUE(listener->listenForShortcut());
+    std::string selectedText = listener->listenForShortcut();
+
+    EXPECT_EQ(selectedText, "Expected Output");
 }

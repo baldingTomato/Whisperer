@@ -1,8 +1,8 @@
 #pragma once
 
+#include "clipboard_reader.hpp"
 #include "input_device.hpp"
 #include "listener.hpp"
-#include "clipboard_reader.hpp"
 
 #include <iostream>
 #include <memory>
@@ -20,5 +20,5 @@ public:
     int initialize();
 
     virtual std::string reactToSelection() override;
-    virtual bool listenForShortcut() override;
+    virtual std::string listenForShortcut() override;
 };

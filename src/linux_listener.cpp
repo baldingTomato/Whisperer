@@ -12,7 +12,7 @@ std::string LinuxListener::reactToSelection() {
 }
 
 int LinuxListener::initialize() {
-    int fd = device_->openDevice("/dev/input/event3", O_RDONLY);
+    int fd = device_->openDevice("/dev/input/event7", O_RDONLY);
     if (fd < 0) {
         std::cerr << "Failed to open input device: " << strerror(errno) << std::endl;
         return -1;
@@ -21,7 +21,7 @@ int LinuxListener::initialize() {
     return fd;
 }
 
-bool LinuxListener::listenForShortcut() {
+std::string LinuxListener::listenForShortcut() {
     int fileDescriptor = initialize();
     struct input_event ie;
     bool ctrl_pressed = false;
@@ -38,15 +38,15 @@ bool LinuxListener::listenForShortcut() {
                 if (ie.code == KEY_L && ie.value == 1 && ctrl_pressed) {
                     capturedText_ = reactToSelection();
                     device_->closeDevice(fileDescriptor);
-                    return true;
+                    return capturedText_;
                 }
             }
         } else {
             std::cerr << "Error reading from input device: " << strerror(errno) << std::endl;
-            return false;
+            return "";
         }
     }
 
     device_->closeDevice(fileDescriptor);
-    return false;
+    return "";
 }
