@@ -7,10 +7,11 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp)
-set(TESTS tests/listener_ut.cpp)
+set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp)
+set(TESTS tests/listener_ut.cpp tests/translator_ut.cpp)
 
 include(FetchContent)
+
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
@@ -20,8 +21,16 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+FetchContent_Declare(
+  cpr
+  GIT_REPOSITORY https://github.com/libcpr/cpr.git
+  GIT_TAG 3b15fa82ea74739b574d705fea44959b58142eb8 # Stable commit
+)
+FetchContent_MakeAvailable(cpr)
+
 project(whisperer)
 enable_testing()
+find_package(CURL REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 add_executable(${PROJECT_NAME}-ut ${TESTS} ${SOURCES})
@@ -33,6 +42,7 @@ elseif(WIN32)
 endif()
 
 target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main)
+target_link_libraries(${PROJECT_NAME} cpr::cpr)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)
