@@ -7,7 +7,7 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp)
+set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
 set(TESTS tests/listener_ut.cpp tests/translator_ut.cpp)
 
 include(FetchContent)
@@ -28,9 +28,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cpr)
 
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.11.2
+)
+FetchContent_MakeAvailable(json)
+
 project(whisperer)
 enable_testing()
-find_package(CURL REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 add_executable(${PROJECT_NAME}-ut ${TESTS} ${SOURCES})
@@ -41,8 +47,8 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_WINDOWS})
 endif()
 
-target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main)
-target_link_libraries(${PROJECT_NAME} cpr::cpr)
+target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} cpr::cpr nlohmann_json::nlohmann_json)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)

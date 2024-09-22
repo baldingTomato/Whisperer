@@ -7,11 +7,17 @@ void Whisperer::startListening() {
 
     if (!textToTranslate.empty()) {
         std::string translatedText = translator_->translate(textToTranslate);
-        std::cout << "Original: \"" << textToTranslate << "\", translated: \"" << translatedText << "\"" << std::endl;
+
+        if (!translatedText.empty()) {
+            std::cout << "Original: " << textToTranslate << "\nTranslated: " << translatedText << std::endl;
+        } else {
+            std::cout << "Translation failed!" << std::endl;
+        }
+
         return;
 
     } else {
-        std::cout << "Something went wrong with capturing the text or translating it!" << std::endl;
+        std::cout << "Something went wrong with capturing the text!" << std::endl;
         return;
     }
 }
