@@ -1,15 +1,17 @@
-#include "whisperer.hpp"
-#include "linux_listener.hpp"
 #include "file_input_device.hpp"
-#include "wl_clipboard_reader.hpp"
 #include "lingva_api.hpp"
+#include "linux_listener.hpp"
+#include "whisperer.hpp"
+#include "wl_clipboard_reader.hpp"
 
+#include <QApplication>
 #include <iostream>
 
-int main() {
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+
     std::unique_ptr<FileInputDevice> device = std::make_unique<FileInputDevice>();
     std::unique_ptr<WlClipboardReader> reader = std::make_unique<WlClipboardReader>();
-
     std::unique_ptr<LingvaAPI> api = std::make_unique<LingvaAPI>();
 
     std::unique_ptr<LinuxListener> listener = std::make_unique<LinuxListener>(std::move(device), std::move(reader));
@@ -19,5 +21,5 @@ int main() {
 
     whisperer.startListening();
 
-    return 0;
+    return app.exec();
 }
