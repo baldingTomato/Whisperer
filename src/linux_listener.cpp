@@ -12,7 +12,7 @@ std::string LinuxListener::reactToSelection() {
 }
 
 int LinuxListener::initialize() {
-    int fd = device_->openDevice("/dev/input/event7", O_RDONLY);
+    int fd = device_->openDevice("/dev/input/event6", O_RDONLY);
     if (fd < 0) {
         std::cerr << "Failed to open input device: " << strerror(errno) << std::endl;
         return -1;
@@ -34,8 +34,8 @@ std::string LinuxListener::listenForShortcut() {
                     ctrl_pressed = ie.value;  // 1 for press, 0 for release
                 }
 
-                // Check for Ctrl + L
-                if (ie.code == KEY_L && ie.value == 1 && ctrl_pressed) {
+                // Check for Ctrl + `
+                if (ie.code == KEY_GRAVE && ie.value == 1 && ctrl_pressed) {
                     capturedText_ = reactToSelection();
                     device_->closeDevice(fileDescriptor);
                     return capturedText_;
