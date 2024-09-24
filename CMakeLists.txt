@@ -35,6 +35,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+
 project(whisperer)
 enable_testing()
 
@@ -47,8 +49,8 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_WINDOWS})
 endif()
 
-target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json)
-target_link_libraries(${PROJECT_NAME} cpr::cpr nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)
