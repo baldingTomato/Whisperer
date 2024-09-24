@@ -73,7 +73,7 @@ TEST_F(LinuxListenerTest, ListenerDetectsShortcut) {
         .WillOnce([](int, void* buffer, size_t) {
             struct input_event event;
             event.type = EV_KEY;
-            event.code = KEY_L;
+            event.code = KEY_GRAVE;
             event.value = 1;  // 'L' key pressed
             memcpy(buffer, &event, sizeof(event));
             return sizeof(event);
