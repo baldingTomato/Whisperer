@@ -3,7 +3,7 @@ Fast and minimalist tool for translating text without jumping through windows to
 
 ### Demo showcasing app working on Hyprland
 
-https://github.com/baldingTomato/Whisperer/blob/main/assets/recording.mp4
+[Watch the demo video on YouTube](https://youtu.be/BN8Ne33sQJ8)
 
 
 
