@@ -9,7 +9,7 @@ set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
 set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
-set(TESTS tests/listener_ut.cpp tests/translator_ut.cpp)
+set(TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
 
 # Set output directory for all executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
