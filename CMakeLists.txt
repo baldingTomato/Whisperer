@@ -8,10 +8,13 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
-set(TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
+set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
+set(WINDOWS_SOURCES src/windows_listener.cpp src/windows_clipboard_reader.cpp src/windows_api.cpp)
+set(COMMON_SOURCES src/main.cpp)
 
-# Set output directory for all executables
+set(LINUX_TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
+set(WINDOWS_TESTS tests/windows_listener_ut.cpp)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 include(FetchContent)
@@ -22,8 +25,6 @@ FetchContent_Declare(
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 FetchContent_Declare(
@@ -43,8 +44,8 @@ FetchContent_MakeAvailable(json)
 # Check for Qt installation
 find_package(Qt5 COMPONENTS Widgets QUIET)
 
-# On Windows, if Qt5 is not found, attempt to install it via vcpkg
 if(WIN32)
+  # Try to install Qt5 via vcpkg if not found
   if(NOT Qt5_FOUND AND DEFINED ENV{VCPKG_ROOT})
       message(STATUS "Qt5 not found. Attempting to install via vcpkg...")
 
@@ -74,19 +75,28 @@ if(WIN32)
   endif()
 endif()
 
-enable_testing()
-
-add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
-add_executable(${PROJECT_NAME}-ut ${TESTS} ${SOURCES})
-
 if(UNIX)
-    target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_LINUX})
+    set(PLATFORM_SOURCES ${LINUX_SOURCES})
+    set(PLATFORM_TESTS ${LINUX_TESTS})
+    set(PLATFORM_FLAGS ${FLAGS_COMMON} ${FLAGS_LINUX})
 elseif(WIN32)
-    target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS_COMMON} ${FLAGS_WINDOWS})
+    set(PLATFORM_SOURCES ${WINDOWS_SOURCES})
+    set(PLATFORM_TESTS ${WINDOWS_TESTS})
+    set(PLATFORM_FLAGS ${FLAGS_COMMON} ${FLAGS_WINDOWS})
 endif()
 
-target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
+enable_testing()
+
+add_executable(${PROJECT_NAME} ${COMMON_SOURCES} ${PLATFORM_SOURCES})
+add_executable(${PROJECT_NAME}-ut ${PLATFORM_TESTS} ${PLATFORM_SOURCES})
+
+target_compile_options(${PROJECT_NAME} PRIVATE ${PLATFORM_FLAGS})
+target_compile_options(${PROJECT_NAME}-ut PRIVATE ${PLATFORM_FLAGS})
+
+target_compile_definitions(${PROJECT_NAME}-ut PRIVATE GTEST_LINKED_AS_SHARED_LIBRARY=1)
+
 target_link_libraries(${PROJECT_NAME} cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
 
 include(GoogleTest)
-gtest_discover_tests(${PROJECT_NAME}-ut)
+add_test(NAME WhispererTests COMMAND $<TARGET_FILE:${PROJECT_NAME}-ut>)
