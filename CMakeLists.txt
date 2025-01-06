@@ -8,9 +8,9 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
+set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp)
 set(WINDOWS_SOURCES src/windows_listener.cpp src/windows_clipboard_reader.cpp src/windows_api.cpp)
-set(COMMON_SOURCES src/main.cpp)
+set(COMMON_SOURCES src/main.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
 
 set(LINUX_TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
 set(WINDOWS_TESTS tests/windows_listener_ut.cpp)
@@ -21,6 +21,9 @@ if(MSVC)
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release)
+
 
 include(FetchContent)
 
@@ -29,6 +32,7 @@ FetchContent_Declare(
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
+# For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
@@ -98,7 +102,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE ${PLATFORM_FLAGS})
 target_compile_options(${PROJECT_NAME}-ut PRIVATE ${PLATFORM_FLAGS})
 
 target_link_libraries(${PROJECT_NAME} cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
-target_link_libraries(${PROJECT_NAME}-ut gtest gmock_main cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME}-ut gmock gmock_main gtest cpr::cpr nlohmann_json::nlohmann_json Qt5::Widgets)
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}-ut)
