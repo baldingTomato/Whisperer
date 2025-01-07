@@ -31,7 +31,7 @@ void WindowsListener::simulateCopy() {
 
 std::string WindowsListener::reactToSelection() {
     simulateCopy();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    std::this_thread::sleep_for(std::chrono::milliseconds(3));
 
     return reader_->getClipboardText();
 }
