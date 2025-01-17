@@ -26,7 +26,8 @@ void Whisperer::startListening() {
     }
 }
 
-/* void Whisperer::displayTranslationPopup(const std::string& translatedText) {
+#ifdef __linux__
+void Whisperer::displayTranslationPopup(const std::string& translatedText) {
     QWidget* popup = new QWidget();
     popup->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     // popup->setAttribute(Qt::WA_TranslucentBackground);
@@ -51,8 +52,9 @@ void Whisperer::startListening() {
 
     // Automatically close the popup
     QTimer::singleShot(3000, popup, &QWidget::close);
-} */
+}
 
+#elif _WIN32
 void Whisperer::displayTranslationPopup(const std::string& translatedText) {
     // Create the popup window
     QWidget* popup = new QWidget();
@@ -105,4 +107,4 @@ void Whisperer::displayTranslationPopup(const std::string& translatedText) {
     // Automatically close the popup after 3 seconds
     QTimer::singleShot(3000, popup, &QWidget::close);
 }
-
+#endif

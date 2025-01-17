@@ -12,7 +12,7 @@ std::string LinuxListener::reactToSelection() {
 }
 
 int LinuxListener::initialize() {
-    int fd = device_->openDevice("/dev/input/event6", O_RDONLY);
+    int fd = device_->openDevice("/dev/input/event3", O_RDONLY);
     if (fd < 0) {
         std::cerr << "Failed to open input device: " << strerror(errno) << std::endl;
         return -1;
