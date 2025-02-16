@@ -1,9 +1,9 @@
 #include "windows_listener.hpp"
 
 #include <windows.h>
+#include <chrono>
 #include <stdexcept>
 #include <thread>
-#include <chrono>
 
 void WindowsListener::simulateCopy() {
     INPUT inputs[4] = {};
@@ -31,7 +31,7 @@ void WindowsListener::simulateCopy() {
 
 std::string WindowsListener::reactToSelection() {
     simulateCopy();
-    std::this_thread::sleep_for(std::chrono::milliseconds(3));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     return reader_->getClipboardText();
 }
