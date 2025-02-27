@@ -38,7 +38,11 @@ std::string WindowsListener::reactToSelection() {
 
 std::string WindowsListener::listenForShortcut() {
     if (!windowsApi_->registerHotKey(nullptr, 1, MOD_CONTROL, VK_OEM_3)) {  // Ctrl + `
-        throw std::runtime_error("Failed to register the hotkey");
+        throw std::runtime_error("Failed to register the translate hotkey");
+    }
+
+    if (!windowsApi_->registerHotKey(nullptr, 2, MOD_CONTROL, 'Q')) {  // Ctrl + `
+        throw std::runtime_error("Failed to register the exit hotkey");
     }
 
     MSG msg = {0};
@@ -47,14 +51,21 @@ std::string WindowsListener::listenForShortcut() {
             if (msg.message == WM_HOTKEY && msg.wParam == 1) {
                 capturedText_ = reactToSelection();
                 windowsApi_->unregisterHotKey(nullptr, 1);  // Unregister after handling
+                windowsApi_->unregisterHotKey(nullptr, 2);
                 return capturedText_;
+            } else if (msg.message == WM_HOTKEY && msg.wParam == 2) { // Exit hotkey pressed
+                windowsApi_->unregisterHotKey(nullptr, 1);
+                windowsApi_->unregisterHotKey(nullptr, 2);
+                return "AURELIA";  // Special signal indicating exit
             }
         }
     } catch (...) {
         windowsApi_->unregisterHotKey(nullptr, 1);  // Ensure cleanup on exception
+        windowsApi_->unregisterHotKey(nullptr, 2);  //
         throw;
     }
 
     windowsApi_->unregisterHotKey(nullptr, 1);
+    windowsApi_->unregisterHotKey(nullptr, 2);
     return "";
 }

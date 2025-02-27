@@ -1,13 +1,20 @@
 #include "whisperer.hpp"
 
+#include <QCoreApplication>
 #include <QMetaObject>
 #include <iostream>
 #include <thread>
 
-
 void Whisperer::startListening() {
-    while (true) {
+    while (keepListening_) {
         std::string textToTranslate = listener_->listenForShortcut();
+
+        if (textToTranslate == "AURELIA") {
+            keepListening_ = false;
+            std::cout << "Exit hotkey pressed. Exiting listener loop.\n";
+            QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
+            break;
+        }
 
         if (!textToTranslate.empty()) {
             std::string translatedText = translator_->translate(textToTranslate);
