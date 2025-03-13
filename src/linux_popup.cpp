@@ -7,11 +7,11 @@
 #include <QTimer>
 #include <QWidget>
 
-void LinuxPopup::popWindow(const std::string& translatedText) {
+void LinuxPopup::popWindow(const QString& translatedText) {
     QWidget* popup = new QWidget();
     popup->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
-    QLabel* label = new QLabel(QString::fromStdString(translatedText), popup);
+    QLabel* label = new QLabel(translatedText, popup);
     label->setAlignment(Qt::AlignCenter);
 
     int marginSize = 10;

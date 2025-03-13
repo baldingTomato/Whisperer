@@ -41,7 +41,7 @@ std::string WindowsListener::listenForShortcut() {
         throw std::runtime_error("Failed to register the translate hotkey");
     }
 
-    if (!windowsApi_->registerHotKey(nullptr, 2, MOD_CONTROL, 'Q')) {  // Ctrl + `
+    if (!windowsApi_->registerHotKey(nullptr, 2, MOD_CONTROL, 'Q')) {  // Ctrl + q
         throw std::runtime_error("Failed to register the exit hotkey");
     }
 

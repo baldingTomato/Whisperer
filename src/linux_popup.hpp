@@ -1,7 +1,13 @@
 #pragma once
-
 #include "popup.hpp"
 
-class LinuxPopup : public Popup {
-    virtual void popWindow(const std::string& translatedText) override;
+class LinuxPopup : public QObject, public Popup {
+    Q_OBJECT
+public:
+    explicit LinuxPopup(QObject* parent = nullptr)
+        : QObject(parent) {}
+
+public slots:
+    void popWindow(const QString& translatedText) override;
+    QObject* toQObject() override { return this; }
 };
