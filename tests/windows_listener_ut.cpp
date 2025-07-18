@@ -48,6 +48,8 @@ TEST_F(WindowsListenerTest, ReactToSelectionReturnsClipboardText) {
 TEST_F(WindowsListenerTest, ListenForShortcutDetectsHotkey) {
     EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 1, MOD_CONTROL, VK_OEM_3))
         .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 2, MOD_CONTROL, 'Q'))
+        .WillOnce(Return(true));
 
     EXPECT_CALL(*mockWindowsApi, getMessage(_, nullptr, 0, 0))
     .WillOnce([](LPMSG msg, HWND, UINT, UINT) {
@@ -63,6 +65,8 @@ TEST_F(WindowsListenerTest, ListenForShortcutDetectsHotkey) {
 
     EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 1))
         .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 2))
+        .WillOnce(Return(true));
 
     EXPECT_CALL(*mockReader, getClipboardText())
         .WillOnce(Return("Expected Clipboard Text"));
@@ -71,6 +75,32 @@ TEST_F(WindowsListenerTest, ListenForShortcutDetectsHotkey) {
 
     std::string capturedText = listener->listenForShortcut();
     EXPECT_EQ(capturedText, "Expected Clipboard Text");
+}
+
+TEST_F(WindowsListenerTest, ListenForShortcutHandlesExitHotkey) {
+    EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 1, MOD_CONTROL, VK_OEM_3))
+        .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 2, MOD_CONTROL, 'Q'))
+        .WillOnce(Return(true));
+
+    EXPECT_CALL(*mockWindowsApi, getMessage(_, nullptr, 0, 0))
+        .WillOnce([](LPMSG msg, HWND, UINT, UINT) {
+            if (msg) {
+                msg->message = WM_HOTKEY;
+                msg->wParam = 2;  // Exit hotkey
+            }
+            return true;
+        });
+
+    EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 1))
+        .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 2))
+        .WillOnce(Return(true));
+
+    listener = std::make_unique<WindowsListener>(std::move(mockReader), std::move(mockWindowsApi));
+    
+    std::string result = listener->listenForShortcut();
+    EXPECT_EQ(result, "AURELIA");
 }
 
 TEST_F(WindowsListenerTest, SimulateCopySendsCorrectInput) {
@@ -128,6 +158,8 @@ TEST_F(WindowsListenerTest, DoesNotUnregisterHotKeyWhenRegistrationFails) {
 TEST_F(WindowsListenerTest, UnregistersHotKeyOnGetMessageException) {
     EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 1, MOD_CONTROL, VK_OEM_3))
         .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, registerHotKey(_, 2, MOD_CONTROL, 'Q'))
+        .WillOnce(Return(true));
 
     EXPECT_CALL(*mockWindowsApi, getMessage(_, nullptr, 0, 0))
         .WillOnce(::testing::Invoke([](LPMSG, HWND, UINT, UINT) -> bool {
@@ -135,6 +167,8 @@ TEST_F(WindowsListenerTest, UnregistersHotKeyOnGetMessageException) {
         }));
 
     EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 1))
+        .WillOnce(Return(true));
+    EXPECT_CALL(*mockWindowsApi, unregisterHotKey(_, 2))
         .WillOnce(Return(true));
 
     listener = std::make_unique<WindowsListener>(std::move(mockReader), std::move(mockWindowsApi));

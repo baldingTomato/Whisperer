@@ -13,8 +13,8 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/linux_popup)
-set(WINDOWS_SOURCES src/windows_listener.cpp src/windows_clipboard_reader.cpp src/windows_api.cpp src/windows_popup)
+set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/linux_popup.cpp)
+set(WINDOWS_SOURCES src/windows_listener.cpp src/windows_clipboard_reader.cpp src/windows_api.cpp src/windows_popup.cpp)
 set(COMMON_SOURCES src/main.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
 
 set(LINUX_TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
