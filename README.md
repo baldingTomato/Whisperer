@@ -12,6 +12,12 @@
 
 ---
 
+### 📽️ Demo (Linux - Hyprland)
+
+[Watch the demo video on YouTube](https://youtu.be/BN8Ne33sQJ8)
+
+---
+
 ### 🧩 Architecture Overview
 
 | Component         | Responsibility                                                                 |
@@ -57,6 +63,17 @@ To let CMake automatically resolve and build dependencies using vcpkg, you must 
 Once installed, add the vcpkg directory to your system’s environment variables so that CMake can find it.
 
 Required DLLs are copied to the output directory automatically after building. If some DLLs are still missing at runtime, ensure they exist in your vcpkg installation under installed/x64-windows/bin.
+
+---
+
+### 📦 Dependencies
+
+    Qt5 (Widgets)
+    CPR (C++ Requests)
+    nlohmann/json
+    GoogleTest
+
+All dependencies are automatically fetched via FetchContent during the CMake configuration step (or resolved via vcpkg on Windows).
 
 ---
 
