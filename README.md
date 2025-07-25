@@ -51,6 +51,13 @@ cmake ..
 cmake --build . --config Release
 ```
 
+#### ⚠️ Windows Users:
+
+To let CMake automatically resolve and build dependencies using vcpkg, you must install vcpkg by following [vcpkg’s official installation guide](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell).
+Once installed, add the vcpkg directory to your system’s environment variables so that CMake can find it.
+
+Required DLLs are copied to the output directory automatically after building. If some DLLs are still missing at runtime, ensure they exist in your vcpkg installation under installed/x64-windows/bin.
+
 ---
 
 Feel free to contribute, open issues, or suggest improvements! I would appreciate any insights on bugs or improvements.
