@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "../src/windows_listener.hpp"
+#include "../src/platform/windows/windows_listener.hpp"
 
 using ::testing::_;
 using ::testing::Return;

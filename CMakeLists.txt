@@ -13,9 +13,9 @@ set(FLAGS_COMMON -Wall)
 set(FLAGS_LINUX -Wextra -Werror -Wconversion -pedantic)
 set(FLAGS_WINDOWS /W4 /WX /we)
 
-set(LINUX_SOURCES src/linux_listener.cpp src/file_input_device.cpp src/wl_clipboard_reader.cpp src/translator.cpp src/linux_popup.cpp)
-set(WINDOWS_SOURCES src/windows_listener.cpp src/windows_clipboard_reader.cpp src/windows_api.cpp src/windows_popup.cpp)
-set(COMMON_SOURCES src/main.cpp src/translator.cpp src/whisperer.cpp src/lingva_api.cpp)
+set(LINUX_SOURCES src/platform/linux/linux_listener.cpp src/platform/linux/file_input_device.cpp src/platform/linux/wl_clipboard_reader.cpp src/core/translator.cpp src/platform/linux/linux_popup.cpp)
+set(WINDOWS_SOURCES src/platform/windows/windows_listener.cpp src/platform/windows/windows_clipboard_reader.cpp src/platform/windows/windows_api.cpp src/platform/windows/windows_popup.cpp)
+set(COMMON_SOURCES src/main.cpp src/core/translator.cpp src/core/whisperer.cpp src/core/lingva_api.cpp)
 
 set(LINUX_TESTS tests/linux_listener_ut.cpp tests/translator_ut.cpp)
 set(WINDOWS_TESTS tests/windows_listener_ut.cpp)
@@ -102,6 +102,40 @@ enable_testing()
 
 add_executable(${PROJECT_NAME} ${COMMON_SOURCES} ${PLATFORM_SOURCES})
 add_executable(${PROJECT_NAME}-ut ${PLATFORM_TESTS} ${PLATFORM_SOURCES})
+
+# Post build dll deployment
+if(WIN32 AND Qt5_FOUND)
+  # Path to Qt DLLs and platform plugins
+  set(QT_DLL_DIR "$ENV{VCPKG_ROOT}/installed/x64-windows/bin")
+  set(QT_PLUGINS_DIR "$ENV{VCPKG_ROOT}/installed/x64-windows/plugins")
+
+  # Copy Qt core DLLs
+  set(RUNTIME_DEST $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${QT_DLL_DIR}/Qt5Widgets.dll"
+      "${QT_DLL_DIR}/Qt5Gui.dll"
+      "${QT_DLL_DIR}/Qt5Core.dll"
+      "${QT_DLL_DIR}/brotlicommon.dll"
+      "${QT_DLL_DIR}/brotlidec.dll"
+      "${QT_DLL_DIR}/bz2.dll"
+      "${QT_DLL_DIR}/double-conversion.dll"
+      "${QT_DLL_DIR}/freetype.dll"
+      "${QT_DLL_DIR}/harfbuzz.dll"
+      "${QT_DLL_DIR}/libpng16.dll"
+      "${QT_DLL_DIR}/pcre2-16.dll"
+      "${QT_DLL_DIR}/zstd.dll"
+      "${RUNTIME_DEST}"
+  )
+
+  # Copy platform plugins
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${RUNTIME_DEST}/platforms"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${QT_PLUGINS_DIR}/platforms/qwindows.dll"
+      "${RUNTIME_DEST}/platforms/"
+  )
+endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE ${PLATFORM_FLAGS})
 target_compile_options(${PROJECT_NAME}-ut PRIVATE ${PLATFORM_FLAGS})

@@ -1,16 +1,16 @@
-#include "lingva_api.hpp"
-#include "whisperer.hpp"
+#include "core/lingva_api.hpp"
+#include "core/whisperer.hpp"
 
 #ifdef _WIN32
-#include "windows_api.cpp"
-#include "windows_clipboard_reader.hpp"
-#include "windows_listener.hpp"
-#include "windows_popup.hpp"
+#include "platform/windows/windows_api.cpp"
+#include "platform/windows/windows_clipboard_reader.hpp"
+#include "platform/windows/windows_listener.hpp"
+#include "platform/windows/windows_popup.hpp"
 #elif __linux__
-#include "file_input_device.hpp"
-#include "linux_listener.hpp"
-#include "linux_popup.hpp"
-#include "wl_clipboard_reader.hpp"
+#include "platform/linux/file_input_device.hpp"
+#include "platform/linux/linux_listener.hpp"
+#include "platform/linux/linux_popup.hpp"
+#include "platform/linux/wl_clipboard_reader.hpp"
 #endif
 
 #include <QApplication>

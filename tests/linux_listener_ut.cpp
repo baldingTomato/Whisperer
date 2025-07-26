@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "../src/linux_listener.hpp"
+#include "../src/platform/linux/linux_listener.hpp"
 
 using ::testing::_;
 using ::testing::Return;

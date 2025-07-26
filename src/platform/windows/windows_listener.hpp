@@ -1,7 +1,7 @@
 #pragma once
 
-#include "clipboard_reader.hpp"
-#include "listener.hpp"
+#include "../../core/clipboard_reader.hpp"
+#include "../../core/listener.hpp"
 #include "windows_api.hpp"
 
 #include <memory>

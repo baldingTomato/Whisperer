@@ -1,5 +1,5 @@
 #pragma once
-#include "popup.hpp"
+#include "../../core/popup.hpp"
 
 class WindowsPopup : public QObject, public Popup {
     Q_OBJECT

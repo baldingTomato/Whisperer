@@ -1,6 +1,6 @@
 #pragma once
 
-#include "clipboard_reader.hpp"
+#include "../../core/clipboard_reader.hpp"
 
 class WlClipboardReader : public ClipboardReader {
 public:

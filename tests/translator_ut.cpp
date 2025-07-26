@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "../src/translator.hpp"
+#include "../src/core/translator.hpp"
 
 using ::testing::_;
 using ::testing::Return;

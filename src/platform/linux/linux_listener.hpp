@@ -1,8 +1,8 @@
 #pragma once
 
-#include "clipboard_reader.hpp"
+#include "../../core/clipboard_reader.hpp"
 #include "input_device.hpp"
-#include "listener.hpp"
+#include "../../core/listener.hpp"
 
 #include <iostream>
 #include <memory>
