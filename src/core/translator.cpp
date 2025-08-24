@@ -4,7 +4,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-std::string Translator::translate(const std::string& unknownPhrase) {
+std::string Translator::translate(const std::string& unknownPhrase) const {
     try {
         std::string translatedPhrase = api_->requestTranslation(unknownPhrase);
         auto jsonResponse = nlohmann::json::parse(translatedPhrase);

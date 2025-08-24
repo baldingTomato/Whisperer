@@ -35,7 +35,7 @@ void Whisperer::startListening() {
     }
 }
 
-void Whisperer::displayTranslationPopup(const std::string& translatedText) {
+void Whisperer::displayTranslationPopup(const std::string& translatedText) const {
     QObject* popupObject = popup_->toQObject();
     if (popupObject) {
         QMetaObject::invokeMethod(

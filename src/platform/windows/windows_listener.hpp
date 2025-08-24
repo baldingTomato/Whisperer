@@ -15,8 +15,8 @@ public:
     WindowsListener(std::unique_ptr<ClipboardReader> reader, std::unique_ptr<WindowsApi> windowsApi)
         : reader_(std::move(reader)), windowsApi_(std::move(windowsApi)){};
 
-    virtual std::string reactToSelection() override;
+    virtual std::string reactToSelection() const override;
     virtual std::string listenForShortcut() override;
 
-    void simulateCopy();
+    void simulateCopy() const;
 };

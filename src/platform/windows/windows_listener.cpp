@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <thread>
 
-void WindowsListener::simulateCopy() {
+void WindowsListener::simulateCopy() const {
     INPUT inputs[4] = {};
 
     // Press Ctrl
@@ -29,9 +29,9 @@ void WindowsListener::simulateCopy() {
     windowsApi_->sendInput(4, inputs, sizeof(INPUT));
 }
 
-std::string WindowsListener::reactToSelection() {
+std::string WindowsListener::reactToSelection() const {
     simulateCopy();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(7));
 
     return reader_->getClipboardText();
 }

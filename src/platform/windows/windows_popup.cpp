@@ -14,7 +14,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-void WindowsPopup::popWindow(const QString& translatedText) {
+void WindowsPopup::popWindow(const QString& translatedText) const {
     QWidget* popup = new QWidget();
     popup->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     popup->setAttribute(Qt::WA_TranslucentBackground);

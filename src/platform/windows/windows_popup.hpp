@@ -8,6 +8,6 @@ public:
         : QObject(parent) {}
 
 public slots:
-    void popWindow(const QString& translatedText) override;
+    void popWindow(const QString& translatedText) const override;
     QObject* toQObject() override { return this; }
 };

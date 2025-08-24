@@ -18,5 +18,5 @@ public:
         : listener_(std::move(listener)), translator_(std::move(translator)), popup_(std::move(popup)){};
 
     void startListening();
-    void displayTranslationPopup(const std::string& translatedText);
+    void displayTranslationPopup(const std::string& translatedText) const;
 };

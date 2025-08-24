@@ -3,5 +3,5 @@
 
 class LingvaAPI : public TranslationAPI {
 public:
-    virtual std::string requestTranslation(const std::string& text) override;
+    virtual std::string requestTranslation(const std::string& text) const override;
 };
