@@ -11,9 +11,10 @@ std::string Translator::translate(const std::string& textToTranslate) const {
 
         if (jsonResponse.contains("translation")) {
             return jsonResponse["translation"].get<std::string>();
-        } else {
-            throw std::runtime_error("Missing translation key in the JSON response");
         }
+        
+        throw std::runtime_error("Missing translation key in the JSON response");
+
     } catch (const std::exception& e) {
         std::cerr << "Translation failed: " << e.what() << std::endl;
         return "";
