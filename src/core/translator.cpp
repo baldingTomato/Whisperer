@@ -10,7 +10,7 @@ std::string Translator::translate(const std::string& textToTranslate) const {
         const auto jsonResponse = nlohmann::json::parse(translatedText);
 
         if (jsonResponse.contains("translation")) {
-            return jsonResponse["translation"].get<std::string>();
+            return jsonResponse.at("translation").get<std::string>();
         }
         
         throw std::runtime_error("Missing translation key in the JSON response");
