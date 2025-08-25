@@ -2,8 +2,9 @@
 
 #include "translation_api.hpp"
 
-#include <string>
 #include <memory>
+#include <string>
+#include <utility>
 
 class Translator {
     std::unique_ptr<TranslationAPI> api_;
@@ -11,5 +12,5 @@ class Translator {
 public:
     Translator(std::unique_ptr<TranslationAPI> api) : api_(std::move(api)) {}
 
-    std::string translate(const std::string& unknownPhrase) const;
+    std::string translate(const std::string& textToTranslate) const;
 };
