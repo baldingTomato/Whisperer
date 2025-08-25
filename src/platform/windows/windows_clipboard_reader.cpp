@@ -10,7 +10,6 @@ std::string WindowsClipboardReader::getClipboardText() const {
 
     std::string selectedText;
 
-    // Retrieve clipboard data
     HANDLE hData = GetClipboardData(CF_TEXT);
     if (hData == nullptr) {
         CloseClipboard();
