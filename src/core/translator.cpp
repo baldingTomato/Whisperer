@@ -1,6 +1,7 @@
 #include "translator.hpp"
 
 #include <cpr/cpr.h>
+#include <exception>
 #include <iostream>
 #include <nlohmann/json.hpp>
 
@@ -12,7 +13,7 @@ std::string Translator::translate(const std::string& textToTranslate) const {
         if (jsonResponse.contains("translation")) {
             return jsonResponse.at("translation").get<std::string>();
         }
-        
+
         throw std::runtime_error("Missing translation key in the JSON response");
 
     } catch (const std::exception& e) {
