@@ -10,7 +10,7 @@ std::string WlClipboardReader::getClipboardText() const {
 
     std::unique_ptr<FILE, int (*)(FILE*)> pipe(popen("wl-paste --primary", "r"), pclose);
 
-    if (!pipe) {
+    if (pipe == nullptr) {
         throw std::runtime_error("popen() failed!");
     }
 
