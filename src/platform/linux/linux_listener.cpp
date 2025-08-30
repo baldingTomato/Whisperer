@@ -7,12 +7,12 @@
 #include <memory>
 #include <stdexcept>
 
-std::string LinuxListener::reactToSelection() {
+std::string LinuxListener::reactToSelection() const {
     return reader_->getClipboardText();
 }
 
 int LinuxListener::initialize() {
-    int fd = device_->openDevice("/dev/input/event4", O_RDONLY);
+    int fd = device_->openDevice("/dev/input/event3", O_RDONLY);
     if (fd < 0) {
         std::cerr << "Failed to open input device: " << strerror(errno) << std::endl;
         return -1;

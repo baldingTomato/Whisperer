@@ -8,7 +8,7 @@
 #include <QTimer>
 #include <QWidget>
 
-void LinuxPopup::popWindow(const QString& translatedText) {
+void LinuxPopup::popWindow(const QString& translatedText) const {
     QWidget* popup = new QWidget();
     popup->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 

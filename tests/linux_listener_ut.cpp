@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <linux/input.h>
 
 #include "../src/platform/linux/linux_listener.hpp"
 
@@ -56,7 +57,7 @@ TEST_F(LinuxListenerTest, ListenerDetectsShortcut) {
     EXPECT_CALL(*mockReader, getClipboardText())
         .Times(1)
         .WillOnce(Return("Expected Output"));
-    
+
     EXPECT_CALL(*mockDevice, openDevice(_, _))
         .Times(1)
         .WillOnce(Return(0));

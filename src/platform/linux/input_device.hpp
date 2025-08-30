@@ -1,6 +1,6 @@
 #pragma once
 
-#include <linux/input.h>
+#include <sys/types.h>
 
 class InputDevice {
 public:

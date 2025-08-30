@@ -8,7 +8,7 @@ using ::testing::Return;
 
 class MockTranslationAPI : public TranslationAPI {
 public:
-    MOCK_METHOD(std::string, requestTranslation, (const std::string&), (override));
+    MOCK_METHOD(std::string, requestTranslation, (const std::string&), (const override));
 };
 
 class TranslatorTest : public ::testing::Test {

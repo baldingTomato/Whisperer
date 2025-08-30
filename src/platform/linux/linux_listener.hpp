@@ -19,6 +19,6 @@ public:
 
     int initialize();
 
-    virtual std::string reactToSelection() override;
+    virtual std::string reactToSelection() const override;
     virtual std::string listenForShortcut() override;
 };
