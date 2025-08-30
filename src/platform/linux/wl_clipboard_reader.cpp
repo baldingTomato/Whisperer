@@ -5,8 +5,8 @@
 #include <stdexcept>
 
 std::string WlClipboardReader::getClipboardText() const {
-    std::array<char, 128> buffer;
-    std::string result;
+    std::array<char, 128> buffer{};
+    std::string result{};
 
     std::unique_ptr<FILE, int (*)(FILE*)> pipe(popen("wl-paste --primary", "r"), pclose);
 
